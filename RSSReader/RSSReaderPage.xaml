@@ -14,7 +14,8 @@
                           ItemsSource="{Binding FeedList}" 
                           IsRefreshing="{Binding IsRefreshing}"
                           RefreshCommand="{Binding RefreshCommand}"
-                          HasUnevenRows="true"  >
+                          HasUnevenRows="true"  
+                          SeparatorVisibility="None">
                     <ListView.ItemTemplate >
                         <DataTemplate>
                                  <Cell:FeedCell ></Cell:FeedCell>

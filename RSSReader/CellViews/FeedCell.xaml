@@ -8,21 +8,21 @@
 
     <StackLayout Orientation="Horizontal">
             
-        <StackLayout Margin="1">
+        <StackLayout Margin="5" BackgroundColor="#d0d0d0" >
                 
-            <StackLayout Orientation="Horizontal">
+            <StackLayout Orientation="Horizontal"  Margin="5,0,0,0">
                 <Image x:Name="image" Source="{Binding image}" WidthRequest="128" Aspect="AspectFit"/>
                 <StackLayout Orientation="Vertical">
 <!--                    <local:myHtmlLabel  Text="{Binding title}" MinimumHeightRequest="20" Margin="2" FontSize="12" LineBreakMode="WordWrap" FontAttributes="Bold"/>-->
                     <htmlLabel:HtmlLabel  Text="{Binding title}" MinimumHeightRequest="20" Margin="2" FontSize="12" LineBreakMode="WordWrap" FontAttributes="Bold"/>
-                    <htmlLabel:HtmlLabel  Text="{Binding description}" LineBreakMode="WordWrap" Margin="2" HeightRequest="80" FontSize="08" FontAttributes="Italic"/>                    
+                    <htmlLabel:HtmlLabel  Text="{Binding description}" LineBreakMode="WordWrap" Margin="2" HeightRequest="80" FontSize="10" FontAttributes="Italic"/>                    
                 </StackLayout>
             </StackLayout>
                 
         </StackLayout>
 
-        <StackLayout WidthRequest="10">
-        </StackLayout>
+<!--        <StackLayout WidthRequest="10">
+        </StackLayout>-->
         
     </StackLayout>
 

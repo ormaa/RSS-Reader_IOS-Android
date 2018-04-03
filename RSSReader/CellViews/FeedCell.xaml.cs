@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Xamarin.Forms;
 
 namespace RSSReader.CellViews
@@ -10,6 +11,11 @@ namespace RSSReader.CellViews
         public FeedCell()
         {
             InitializeComponent();
+
+            this.Appearing += async (object sender, EventArgs e) => {
+                //await refreshData();
+                Debug.WriteLine("new cell ");
+            };
         }
     }
 }
