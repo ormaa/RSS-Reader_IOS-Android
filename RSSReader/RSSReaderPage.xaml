@@ -8,7 +8,13 @@
     <Grid>
         
             <StackLayout Margin="1">
-            	<ListView x:Name="FeedListView" CachingStrategy="RecycleElement" SelectedItem="{Binding SelectedItem}" ItemsSource="{Binding FeedList}" HasUnevenRows="true" >
+            	<ListView x:Name="FeedListView" CachingStrategy="RecycleElement" 
+                          IsPullToRefreshEnabled="True"
+                          SelectedItem="{Binding SelectedItem}" 
+                          ItemsSource="{Binding FeedList}" 
+                          IsRefreshing="{Binding IsRefreshing}"
+                          RefreshCommand="{Binding RefreshCommand}"
+                          HasUnevenRows="true"  >
                     <ListView.ItemTemplate >
                         <DataTemplate>
                                  <Cell:FeedCell ></Cell:FeedCell>
@@ -16,7 +22,8 @@
                     </ListView.ItemTemplate>
                 </ListView>
             </StackLayout>
-        
-      <ActivityIndicator x:Name="activity"  IsVisible="true" IsRunning="true" WidthRequest="64" Scale="1"/>
+        <Grid WidthRequest="32" HeightRequest="32" HorizontalOptions="Center" VerticalOptions="Center" x:Name="activityGrid">
+              <ActivityIndicator x:Name="activity"  IsVisible="true" IsRunning="true" Scale="2" Color="Lime"/>
+        </Grid>
     </Grid>
 </ContentPage>

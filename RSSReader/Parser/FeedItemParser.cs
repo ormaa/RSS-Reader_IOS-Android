@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using RSSReader.Model;
+using Xamarin.Forms;
 
 namespace RSSReader.Parser
 {

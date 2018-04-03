@@ -128,14 +128,14 @@
       <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\monoandroid\System.Net.Http.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http" />
-    <Reference Include="HtmlAgilityPack">
-      <HintPath>..\packages\HtmlAgilityPack.1.6.10\lib\netstandard2.0\HtmlAgilityPack.dll</HintPath>
-    </Reference>
     <Reference Include="Plugin.HtmlLabel.Android">
       <HintPath>..\packages\Xam.Plugin.HtmlLabel.2.2.0\lib\MonoAndroid10\Plugin.HtmlLabel.Android.dll</HintPath>
     </Reference>
     <Reference Include="Plugin.HtmlLabel">
       <HintPath>..\packages\Xam.Plugin.HtmlLabel.2.2.0\lib\MonoAndroid10\Plugin.HtmlLabel.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlAgilityPack">
+      <HintPath>..\packages\HtmlAgilityPack.1.7.2\lib\netstandard2.0\HtmlAgilityPack.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

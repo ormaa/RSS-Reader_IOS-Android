@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using RSSReader.Model;
 using RSSReader.Network;
 using Xamarin.Forms;
@@ -12,6 +13,42 @@ namespace RSSReader.ViewModel
 {
     public class RSSFeedViewModel:INotifyPropertyChanged
     {
+
+
+
+        public ICommand RefreshCommand
+        {
+            get
+            {
+                return new Command(async () =>
+                {
+                    IsRefreshing = true;
+
+                    //await RefreshData();
+                    NetworkManager manager = NetworkManager.Instance;
+                    List<FeedItem> list = await manager.GetSyncFeedAsync();
+                    FeedList = new ObservableCollection<FeedItem>(list);
+
+                    IsRefreshing = false;
+
+                    // rss feed is loaded, can hide the wait animation
+                    MessagingCenter.Send(Application.Current, "stopActivity");
+                });
+            }
+        }
+
+
+        private bool _isRefreshing = false;
+        public bool IsRefreshing
+        {
+            get { return _isRefreshing; }
+            set
+            {
+                _isRefreshing = value;
+                OnPropertyChanged(nameof(IsRefreshing));
+            }
+        }
+
         public ObservableCollection<FeedItem> FeedList
         {
             get => feedList;
@@ -21,7 +58,6 @@ namespace RSSReader.ViewModel
                     feedList = value;
                     OnPropertyChanged("FeedList");   
                 }
-
             }
         }
 
@@ -58,12 +94,9 @@ namespace RSSReader.ViewModel
         // get rss content, async, by webservice call
         public async void GetNewsFeedAsync()
         {
-            NetworkManager manager = NetworkManager.Instance;
-            List<FeedItem> list = await manager.GetSyncFeedAsync();
-            FeedList = new ObservableCollection<FeedItem>(list);
-
-            // rss feed is loaded, can hide the wait animation
-            MessagingCenter.Send(Application.Current, "stopActivity");
+            //NetworkManager manager = NetworkManager.Instance;
+            //List<FeedItem> list = await manager.GetSyncFeedAsync();
+            //FeedList = new ObservableCollection<FeedItem>(list);
         }
 
 
