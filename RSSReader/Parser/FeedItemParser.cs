@@ -55,40 +55,40 @@ namespace RSSReader.Parser
                         if ( index2 != -1 && index2 > index )
                         {
                             var img = desc.Substring(index + 10, index2 - index - 6);
-                            feed.image = img; //item.Element("description").Element("figure").Element("img").Value.ToString();
+                            feed.image = img;   //item.Element("description").Element("figure").Element("img").Value.ToString();
                         }
                     }
                 }
 
 
-                // Remove the tags <img ... />
-                bool b = true;
-                do {
-                    b = str.Contains("<img");
-                    if (b)
-                    {
-                        var index = str.IndexOf("<img");
-                        if (index != -1)
-                        {
-                            var index2 = str.IndexOf("/>", index);
-                            if ( index2 != -1 )
-                            {
-                                string str2 = str.Substring(0, index) + str.Substring(index2 + 2, str.Length - index2 -2 );
-                                str = str2;
-                            }
-                            else {
-                                var index3 = str.IndexOf("/img>", index);
-                                if (index3 != -1)
-                                {
-                                    string str2 = str.Substring(0, index) + str.Substring(index3 + 5, str.Length - index2 - 5);
-                                    str = str2;
-                                }
-                            }
-                        }
+                //// Remove the tags <img ... />
+                //bool b = true;
+                //do {
+                //    b = str.Contains("<img");
+                //    if (b)
+                //    {
+                //        var index = str.IndexOf("<img");
+                //        if (index != -1)
+                //        {
+                //            var index2 = str.IndexOf("/>", index);
+                //            if ( index2 != -1 )
+                //            {
+                //                string str2 = str.Substring(0, index) + str.Substring(index2 + 2, str.Length - index2 -2 );
+                //                str = str2;
+                //            }
+                //            else {
+                //                var index3 = str.IndexOf("/img>", index);
+                //                if (index3 != -1)
+                //                {
+                //                    string str2 = str.Substring(0, index) + str.Substring(index3 + 5, str.Length - index2 - 5);
+                //                    str = str2;
+                //                }
+                //            }
+                //        }
 
-                        // str
-                    }
-                } while ( b );
+                //        // str
+                //    }
+                //} while ( b );
 
                 feed.description = str;
 

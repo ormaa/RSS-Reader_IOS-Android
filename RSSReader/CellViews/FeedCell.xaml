@@ -11,7 +11,7 @@
         <StackLayout Margin="5" BackgroundColor="#d0d0d0" >
                 
             <StackLayout Orientation="Horizontal"  Margin="5,0,0,0">
-                <Image x:Name="image" Source="{Binding imageSource}" WidthRequest="128" Aspect="AspectFit" />
+                <Image x:Name="image" Source="{Binding image}" WidthRequest="128" Aspect="AspectFit" />
                 <StackLayout Orientation="Vertical">
 <!--                    <local:myHtmlLabel  Text="{Binding title}" MinimumHeightRequest="20" Margin="2" FontSize="12" LineBreakMode="WordWrap" FontAttributes="Bold"/>-->
                     <htmlLabel:HtmlLabel  Text="{Binding title}" MinimumHeightRequest="20" Margin="2" FontSize="12" LineBreakMode="WordWrap" FontAttributes="Bold"/>

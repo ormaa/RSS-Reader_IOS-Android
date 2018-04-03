@@ -12,10 +12,10 @@ namespace RSSReader.CellViews
         {
             InitializeComponent();
 
-            this.Appearing += async (object sender, EventArgs e) => {
-                //await refreshData();
-                Debug.WriteLine("new cell ");
-            };
+            //this.Appearing += async (object sender, EventArgs e) => {
+            //    //await refreshData();
+            //    Debug.WriteLine("new cell ");
+            //};
         }
     }
 }

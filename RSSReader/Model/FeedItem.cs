@@ -23,13 +23,13 @@ namespace RSSReader.Model
 
 
                // Task.Run(async () => { await getImg(image); });
-                if ( image != ""  && _imageSource == null) {
+                if ( image != null && image != ""  && _imageSource == null) {
+                    Debug.WriteLine(image);
                     Task<ImageSource> result = Task<ImageSource>.Factory.StartNew( () => ImageSource.FromUri(new Uri(image)));
-                    _imageSource = result.Result;
+                    //_imageSource = result.Result;
                 }
 
                 //ImageSource src = ImageSource.FromUri( new Uri( image ) );
-
                 //Image img = new Image { Source = image };
                 //img.Scale = 0.5;
 
@@ -46,23 +46,26 @@ namespace RSSReader.Model
             //}  
         }
 
-        async void getImg(string name) 
-        {
+        //async void getImg(string name) 
+        //{
 
-            //Task.Run(async () => { 
-            //    ImageSource src =  ImageSource.FromUri(new Uri(name)); 
-            //});
+        //    //Task.Run(async () => { 
+        //    //    ImageSource src =  ImageSource.FromUri(new Uri(name)); 
+        //    //});
 
-            System.Uri uri;
-            //System.Uri.TryCreate(new Uri(name), UriKind.Absolute, out uri);
-            Task<ImageSource> result = Task<ImageSource>.Factory.StartNew(() => ImageSource.FromUri(new Uri(name)));
-            //_companyImage.Source = await result;
+        //    System.Uri uri;
+        //    //System.Uri.TryCreate(new Uri(name), UriKind.Absolute, out uri);
+        //    Task<ImageSource> result = Task<ImageSource>.Factory.StartNew(() => ImageSource.FromUri(new Uri(name)));
+        //    //_companyImage.Source = await result;
 
-        }
+        //}
 
 
         public FeedItem()
         {
         }
+
+
+
     }
 }
