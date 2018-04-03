@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewCell xmlns="http://xamarin.com/schemas/2014/forms" 
+          xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+          x:Class="RSSReader.CellViews.FeedCell"
+          xmlns:local="clr-namespace:RSSReader;assembly=RSSReader"
+          xmlns:htmlLabel="clr-namespace:Plugin.HtmlLabel;assembly=Plugin.HtmlLabel"
+          >
+
+    <StackLayout Orientation="Horizontal">
+            
+        <StackLayout Margin="1">
+                
+            <StackLayout Orientation="Horizontal">
+                <Image x:Name="image" Source="{Binding image}" WidthRequest="128" Aspect="AspectFit"/>
+                <StackLayout Orientation="Vertical">
+<!--                    <local:myHtmlLabel  Text="{Binding title}" MinimumHeightRequest="20" Margin="2" FontSize="12" LineBreakMode="WordWrap" FontAttributes="Bold"/>-->
+                    <htmlLabel:HtmlLabel  Text="{Binding title}" MinimumHeightRequest="20" Margin="2" FontSize="12" LineBreakMode="WordWrap" FontAttributes="Bold"/>
+                    <htmlLabel:HtmlLabel  Text="{Binding description}" LineBreakMode="WordWrap" Margin="2" HeightRequest="80" FontSize="08" FontAttributes="Italic"/>                    
+                </StackLayout>
+            </StackLayout>
+                
+        </StackLayout>
+
+        <StackLayout WidthRequest="10">
+        </StackLayout>
+        
+    </StackLayout>
+
+</ViewCell>
