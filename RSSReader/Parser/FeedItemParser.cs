@@ -60,6 +60,7 @@ namespace RSSReader.Parser
                     }
                 }
 
+
                 // Remove the tags <img ... />
                 bool b = true;
                 do {
@@ -97,6 +98,10 @@ namespace RSSReader.Parser
 
             return feeds;
         }
+
+
+
+      
 
 
         //public static string UnescapeCodes(string src)

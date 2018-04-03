@@ -57,6 +57,7 @@
     </Compile>
     <Compile Include="myHtmlLabel.cs" />
     <Compile Include="HtmlLabel.cs" />
+    <Compile Include="Interfaces.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Net.Http.Extensions">
