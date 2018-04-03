@@ -19,6 +19,7 @@ namespace RSSReader
             BindingContext = RSSFeedViewModelObject;
 
             // subscribe to event fired when download of RSS Feed is completed.
+
             MessagingCenter.Subscribe<Application>(this, "stopActivity", (sender) => {
 
                 Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
@@ -27,16 +28,26 @@ namespace RSSReader
                 });
             });
 
+            // subscribe to event fired when download of RSS Feed is started.
+
+            MessagingCenter.Subscribe<Application>(this, "startActivity", (sender) => {
+
+                Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
+                {
+                    showWaitAnimation();
+                });
+            });
+
             // start the first refresh of the listview
             FeedListView.IsRefreshing = true;
             FeedListView.BeginRefresh();
         }
 
-        // hide the activityIndocator = wait animation
+        // hide the activityIndicator = wait animation
         //
         public  async void hideWaitAnimation()
         {
-            //await Task.Yield();
+            await Task.Yield();
 
             //do
             //{
@@ -48,6 +59,16 @@ namespace RSSReader
             activity.IsRunning = false;
             activity.IsVisible = false;
             activityGrid.IsVisible = false;
+        }
+
+        // show the activityIndicator = wait animation
+        //
+        public async void showWaitAnimation()
+        {
+            await Task.Yield();
+            activity.IsRunning = true;
+            activity.IsVisible = true;
+            activityGrid.IsVisible = true;
         }
 
 

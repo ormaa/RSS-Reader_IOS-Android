@@ -22,6 +22,8 @@ namespace RSSReader.ViewModel
             {
                 return new Command(async () =>
                 {
+                    MessagingCenter.Send(Application.Current, "startActivity");
+
                     IsRefreshing = true;
 
                     //await RefreshData();
