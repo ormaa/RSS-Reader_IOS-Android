@@ -7,7 +7,7 @@
 
     <Grid>
         <!--                          SelectedItem="{Binding SelectedItem}" -->
-            <StackLayout Margin="1">
+            <StackLayout Margin="1" HeightRequest="130">
             	<ListView x:Name="FeedListView" CachingStrategy="RecycleElement" 
                           IsPullToRefreshEnabled="True"
 

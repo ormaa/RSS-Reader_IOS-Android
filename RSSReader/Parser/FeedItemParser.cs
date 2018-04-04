@@ -58,7 +58,7 @@ namespace RSSReader.Parser
                 feed.link = item.Element("link").Value.ToString();
                 feed.pubdate = item.Element("pubDate").Value.ToString();
                 feed.guid = item.Element("guid").Value.ToString();
-                feed.image = "";        // by default, there is no image
+                feed.imageURL = "";        // by default, there is no image
 
                 // title is html. in this case, we need to use something like HTML Label
                 feed.title = item.Element("title").Value.ToString();    // Regex.Unescape(item.Element("title").Value.ToString());
@@ -82,7 +82,9 @@ namespace RSSReader.Parser
                             // TODO : this is dangerous, because the length of desc has to be chacked before doing that.
                             // 
                             var img = desc.Substring(index + 10, index2 - index - 6);
-                            feed.image = img;  
+                            feed.imageURL = img;
+                            //feed.ImageUrl = img;
+
                         }
                     }
                 }
@@ -135,7 +137,7 @@ namespace RSSReader.Parser
 
             Debug.WriteLine("Starting to load images in async task at : " + new DateTime().ToString());
 
-            Task.Run(async () => { await LoadImages(); }); // Singleton.feeds ); });
+            //Task.Run(async () => { await LoadImages(); }); // Singleton.feeds ); });
 
             Debug.WriteLine("leaving parse Feed method at  : " + new DateTime().ToString());
 
@@ -143,9 +145,12 @@ namespace RSSReader.Parser
         }
 
 
-                    //Task<ImageSource> result = Task<ImageSource>.Factory.StartNew(() => ImageSource.FromUri(new Uri(name)));
-                    //_imageSource = result.Result;
 
+        //Task<ImageSource> result = Task<ImageSource>.Factory.StartNew(() => ImageSource.FromUri(new Uri(name)));
+        //_imageSource = result.Result;
+
+
+        /* not used anymore
 
         public async Task LoadImages() //List<FeedItem> feeds) 
         {
@@ -154,7 +159,7 @@ namespace RSSReader.Parser
             //            foreach (var feed in Singleton.feeds)
             for (int index = 0; index < Singleton.feeds.Count; index++)
             {
-                string name = Singleton.feeds[index].image;
+                string name = Singleton.feeds[index].imageURL;
 
                 if (name != null && name != "" )
                 {
@@ -185,7 +190,7 @@ namespace RSSReader.Parser
 
                         // 
                         // Binding will send the update event to the UI ??? not here. view model is not proper then.
-                        Singleton.feeds[index].imageSource = source;
+                        //Singleton.feeds[index].imageSource = source;
                     }
                     else {
                         Debug.WriteLine("resized image returned null : " + name);
@@ -237,6 +242,8 @@ namespace RSSReader.Parser
             return tcs.Task.Result;
         }
 
+
+        */
 
 
 

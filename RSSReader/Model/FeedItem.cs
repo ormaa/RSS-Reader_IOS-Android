@@ -5,7 +5,7 @@ using Xamarin.Forms;
 
 namespace RSSReader.Model
 {
-    public class FeedItem
+    public class FeedItem: Image
     {
    
         public FeedItem()
@@ -18,9 +18,23 @@ namespace RSSReader.Model
         public string description { get; set; }
         public string pubdate { get; set; }
         public string guid { get; set; }
-        public string image { get; set;  }
-        public  ImageSource imageSource  { get; set; }
+        public string imageURL { get; set;  }
+        //public  ImageSource imageSource  { get; set; }
 
+        //public static readonly BindableProperty ImageUrlProperty = BindableProperty.Create<FeedItem, string>(w => w.ImageUrl, null);
+
+        ///// <summary>
+        ///// sets the image URL.
+        ///// </summary>
+        ///// <value>The image URL.</value>
+        //public string ImageUrl
+        //{
+        //    get { return (string)GetValue(ImageUrlProperty); }
+        //    set
+        //    {
+        //        SetValue(ImageUrlProperty, value);
+        //    }
+        //}
 
 
         // TODO :  not really god, as it force me to use Xamarin.Forms which is a graphicval namespace !

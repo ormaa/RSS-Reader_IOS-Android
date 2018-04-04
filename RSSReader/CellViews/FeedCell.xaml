@@ -1,42 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<local:FastCell xmlns="http://xamarin.com/schemas/2014/forms" 
-xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
-x:Class="RSSReader.CellViews.FeedCell"
-xmlns:local="clr-namespace:RSSReader;assembly=RSSReader"
-
-                >
-    
-<!--<ViewCell xmlns="http://xamarin.com/schemas/2014/forms" 
+<ViewCell xmlns="http://xamarin.com/schemas/2014/forms" 
           xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
           x:Class="RSSReader.CellViews.FeedCell"
           xmlns:local="clr-namespace:RSSReader;assembly=RSSReader"
           xmlns:htmlLabel="clr-namespace:Plugin.HtmlLabel;assembly=Plugin.HtmlLabel"
-          >-->
+          >
 
-    <StackLayout Orientation="Horizontal" HeightRequest="250">
+    <StackLayout Orientation="Horizontal" >
             
         <StackLayout Margin="5" BackgroundColor="#d0d0d0" >
                 
             <StackLayout Orientation="Horizontal"  Margin="5,0,0,0">
 <!--                <Image x:Name="image" Source="{Binding imageSource}" WidthRequest="128" HeightRequest="128" Aspect="AspectFit" />-->
-<!--                <Image x:Name="image"  WidthRequest="128" HeightRequest="128" Aspect="AspectFit" />-->
+                <Image x:Name="image"  Source="{Binding imageURL}" WidthRequest="128"  Aspect="AspectFit" />
                <StackLayout Orientation="Vertical">
 <!--                    <local:myHtmlLabel  Text="{Binding title}" MinimumHeightRequest="20" Margin="2" FontSize="12" LineBreakMode="WordWrap" FontAttributes="Bold"/>-->
-<!--                    <htmlLabel:HtmlLabel  Text="{Binding title}" MinimumHeightRequest="20" Margin="2" FontSize="12" LineBreakMode="WordWrap" FontAttributes="Bold"/>
-                    <htmlLabel:HtmlLabel  Text="{Binding description}" LineBreakMode="WordWrap" Margin="2" HeightRequest="80" FontSize="10" FontAttributes="Italic"/>                    
--->
-                    <Label  x:Name="title" MinimumHeightRequest="20" Margin="2" FontSize="12" LineBreakMode="WordWrap" FontAttributes="Bold"/>
-                    <Label  x:Name="description" LineBreakMode="WordWrap" Margin="2" HeightRequest="80" FontSize="10" FontAttributes="Italic"/>                    
+                   <htmlLabel:HtmlLabel  Text="{Binding title}" MinimumHeightRequest="20" Margin="2" FontSize="12" LineBreakMode="WordWrap" FontAttributes="Bold"/>
+                   <htmlLabel:HtmlLabel  Text="{Binding description}" LineBreakMode="WordWrap" Margin="2" HeightRequest="80" FontSize="10" FontAttributes="Italic"/>                    
+               
                 </StackLayout>
             </StackLayout>
                 
         </StackLayout>
 
-<!--        <StackLayout WidthRequest="10">
-        </StackLayout>-->
-        
+
     </StackLayout>
 
-<!--</ViewCell>-->
-    </local:FastCell>
+</ViewCell>
