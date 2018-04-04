@@ -25,7 +25,7 @@ namespace RSSReader.ViewModel
                 {
                     Debug.WriteLine("Refresh command ");
 
-                    MessagingCenter.Send(Application.Current, "startActivity");
+                    //MessagingCenter.Send(Application.Current, "startActivity");
 
                     IsRefreshing = true;
 
@@ -41,7 +41,7 @@ namespace RSSReader.ViewModel
                     Debug.WriteLine("Refresh completed. Stopping activity indicator");
 
                     // rss feed is loaded, can hide the wait animation
-                    MessagingCenter.Send(Application.Current, "stopActivity");
+                    //MessagingCenter.Send(Application.Current, "stopActivity");
                 });
             }
         }
@@ -77,13 +77,14 @@ namespace RSSReader.ViewModel
             get => selectedItem;
             set
             {
-                if(selectedItem != value){
+                if ( selectedItem != value ) {
                     selectedItem = value;
                     OnPropertyChanged("SelectedItem");  
                     OpenWebPage();
                 }
             }
         }
+
         ObservableCollection<FeedItem> feedList = null;
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -94,21 +95,21 @@ namespace RSSReader.ViewModel
         // constructor
         public RSSFeedViewModel(INavigation navigation)
         {
-            this.GetNewsFeedAsync();
+            //this.GetNewsFeedAsync();
             Navigation = navigation;
         }
 
 
 
-        // get rss content, async, by webservice call
-        public async void GetNewsFeedAsync()
-        {
-            Debug.WriteLine("get Feeds items from web");
+        //// get rss content, async, by webservice call
+        //public async void GetNewsFeedAsync()
+        //{
+        //    Debug.WriteLine("get Feeds items from web");
 
-            //NetworkManager manager = NetworkManager.Instance;
-            //List<FeedItem> list = await manager.GetSyncFeedAsync();
-            //FeedList = new ObservableCollection<FeedItem>(list);
-        }
+        //    //NetworkManager manager = NetworkManager.Instance;
+        //    //List<FeedItem> list = await manager.GetSyncFeedAsync();
+        //    //FeedList = new ObservableCollection<FeedItem>(list);
+        //}
 
 
         // notify a property change event

@@ -14,14 +14,17 @@ namespace RSSReader.Parser
 {
 
     public static class Singleton {
-        public static List<ImageHTML> Images = new List<ImageHTML>();
+        //public static List<ImageHTML> Images = new List<ImageHTML>();
+
+        public static List<FeedItem> feeds = new List<FeedItem>();
+
     }
 
-    public  class ImageHTML
-    {
-        public  string imageName = "";
-        public ImageSource imageSource = null;
-    }
+    //public  class ImageHTML
+    //{
+    //    public  string imageName = "";
+    //    public ImageSource imageSource = null;
+    //}
 
 
 
@@ -41,36 +44,45 @@ namespace RSSReader.Parser
 
             Debug.WriteLine("RSS Feed received. parsing values");
 
+            // TODO : this could crash, if the response is not complete, or if response is ean error instead of xml, or if response is json ??? (does RSS feed exist in json ???)
+            // catch this ? to be confirmed : what is the best way need to be used
+
             XDocument doc = XDocument.Parse(response);
-            List<FeedItem> feeds = new List<FeedItem>();
+
             foreach (var item in doc.Descendants("item"))
             {
                 FeedItem feed = new FeedItem();
 
+                // get some feed values. not really useful in this application
+
                 feed.link = item.Element("link").Value.ToString();
                 feed.pubdate = item.Element("pubDate").Value.ToString();
                 feed.guid = item.Element("guid").Value.ToString();
+                feed.image = "";        // by default, there is no image
 
-                // title is html. can contain escaped characters
-                feed.title = item.Element("title").Value.ToString(); // Regex.Unescape(item.Element("title").Value.ToString());
+                // title is html. in this case, we need to use something like HTML Label
+                feed.title = item.Element("title").Value.ToString();    // Regex.Unescape(item.Element("title").Value.ToString());
 
                 // Desvcription is html also
                 string str = item.Element("description").Value.ToString();
 
-                // by default, there is no image
-                feed.image = "";
+                // check if description contains an image. if yes, we will display the first one, as thumbnail of the Feed list
                 if (str.Contains("<img"))
                 {
                     // the description contain at least one image :  we will get the first one as description thumbnail
-                    // TODO : the problem here is that the image could be an advertising !. what to do to manage it better ???
+                    // TODO : the problem here is that the image could be an advertising !. 
+                    // what to do to manage it better ???
+
                     var desc = str;
                     var index = desc.IndexOf("<img src=");
                     if ( index != -1 ) {
                         var index2 = desc.IndexOf(".jpg", index);
                         if ( index2 != -1 && index2 > index )
                         {
+                            // TODO : this is dangerous, because the length of desc has to be chacked before doing that.
+                            // 
                             var img = desc.Substring(index + 10, index2 - index - 6);
-                            feed.image = img;   //item.Element("description").Element("figure").Element("img").Value.ToString();
+                            feed.image = img;  
                         }
                     }
                 }
@@ -115,19 +127,19 @@ namespace RSSReader.Parser
                 feed.description = str.Substring(0, max);
 
                 
-                feeds.Add(feed);
+                Singleton.feeds.Add(feed);
             }
 
             Debug.WriteLine("Feed parsed properly");
-            Debug.WriteLine("Nb lines of feeds : " + feeds.Count.ToString());
+            Debug.WriteLine("Nb lines of feeds : " + Singleton.feeds.Count.ToString());
 
             Debug.WriteLine("Starting to load images in async task at : " + new DateTime().ToString());
 
-            Task.Run(async () => { await LoadImages(feeds); });
+            Task.Run(async () => { await LoadImages(); }); // Singleton.feeds ); });
 
             Debug.WriteLine("leaving parse Feed method at  : " + new DateTime().ToString());
 
-            return feeds;
+            return Singleton.feeds;
         }
 
 
@@ -135,12 +147,14 @@ namespace RSSReader.Parser
                     //_imageSource = result.Result;
 
 
-        public async Task LoadImages(List<FeedItem> feeds) 
+        public async Task LoadImages() //List<FeedItem> feeds) 
         {
             Debug.WriteLine("Loading images");
-            foreach (var feed in feeds)
+
+            //            foreach (var feed in Singleton.feeds)
+            for (int index = 0; index < Singleton.feeds.Count; index++)
             {
-                string name = feed.image;
+                string name = Singleton.feeds[index].image;
 
                 if (name != null && name != "" )
                 {
@@ -163,21 +177,20 @@ namespace RSSReader.Parser
                         var stream1 = new MemoryStream(bytes);
                         ImageSource source = ImageSource.FromStream(() => stream1);
 
-                        // create imageHTML object
-                        ImageHTML imgHtml = new ImageHTML();
-                        imgHtml.imageName = name;
-                        imgHtml.imageSource = source;
-                        Singleton.Images.Add(imgHtml);
+                        //// create imageHTML object
+                        //ImageHTML imgHtml = new ImageHTML();
+                        //imgHtml.imageName = name;
+                        //imgHtml.imageSource = source;
+                        //Singleton.Images.Add(imgHtml);
 
-                        // TODO : update feed list element. is it woring ??? to be checked !
+                        // 
                         // Binding will send the update event to the UI ??? not here. view model is not proper then.
-                        feed.imageSource = source;
+                        Singleton.feeds[index].imageSource = source;
                     }
                     else {
                         Debug.WriteLine("resized image returned null : " + name);
 
                     }
-
                 }
                 else {
                     Debug.WriteLine("Feed has an image name = null");

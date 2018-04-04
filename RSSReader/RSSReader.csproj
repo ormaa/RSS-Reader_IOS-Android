@@ -58,6 +58,7 @@
     <Compile Include="myHtmlLabel.cs" />
     <Compile Include="HtmlLabel.cs" />
     <Compile Include="Interfaces.cs" />
+    <Compile Include="FastCell.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Net.Http.Extensions">

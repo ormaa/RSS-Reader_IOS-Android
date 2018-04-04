@@ -6,11 +6,11 @@
              xmlns:Cell="clr-namespace:RSSReader.CellViews;assembly=RSSReader">
 
     <Grid>
-        
+        <!--                          SelectedItem="{Binding SelectedItem}" -->
             <StackLayout Margin="1">
             	<ListView x:Name="FeedListView" CachingStrategy="RecycleElement" 
                           IsPullToRefreshEnabled="True"
-                          SelectedItem="{Binding SelectedItem}" 
+
                           ItemsSource="{Binding FeedList}" 
                           IsRefreshing="{Binding IsRefreshing}"
                           RefreshCommand="{Binding RefreshCommand}"
@@ -23,8 +23,8 @@
                     </ListView.ItemTemplate>
                 </ListView>
             </StackLayout>
-        <Grid WidthRequest="32" HeightRequest="32" HorizontalOptions="Center" VerticalOptions="Center" x:Name="activityGrid">
+<!--        <Grid WidthRequest="32" HeightRequest="32" HorizontalOptions="Center" VerticalOptions="Center" x:Name="activityGrid">
               <ActivityIndicator x:Name="activity"  IsVisible="true" IsRunning="true" Scale="2" Color="Lime"/>
-        </Grid>
+        </Grid>-->
     </Grid>
 </ContentPage>
