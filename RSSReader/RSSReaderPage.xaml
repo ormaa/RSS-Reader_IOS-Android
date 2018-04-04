@@ -5,26 +5,40 @@
              x:Class="RSSReader.RSSReaderPage"  
              xmlns:Cell="clr-namespace:RSSReader.CellViews;assembly=RSSReader">
 
-    <Grid>
-        <!--                          SelectedItem="{Binding SelectedItem}" -->
-            <StackLayout Margin="1" HeightRequest="130">
+    <Grid x:Name="root">
+
+            <StackLayout Margin="1" HeightRequest="10">
+            
+                <Label  Text="ORMAA RSS reader" FontSize="16" LineBreakMode="WordWrap" FontAttributes="Bold" Margin="5,20,5,5" HorizontalOptions="Center"/>
+
+<!--                                      SelectedItem="{Binding SelectedItem}" -->
+            
             	<ListView x:Name="FeedListView" CachingStrategy="RecycleElement" 
                           IsPullToRefreshEnabled="True"
-
+                          SelectedItem=""
                           ItemsSource="{Binding FeedList}" 
                           IsRefreshing="{Binding IsRefreshing}"
                           RefreshCommand="{Binding RefreshCommand}"
                           HasUnevenRows="true"  
                           SeparatorVisibility="None">
+                
                     <ListView.ItemTemplate >
                         <DataTemplate>
                                  <Cell:FeedCell ></Cell:FeedCell>
                         </DataTemplate>
                     </ListView.ItemTemplate>
+                
                 </ListView>
+            
             </StackLayout>
+        
 <!--        <Grid WidthRequest="32" HeightRequest="32" HorizontalOptions="Center" VerticalOptions="Center" x:Name="activityGrid">
               <ActivityIndicator x:Name="activity"  IsVisible="true" IsRunning="true" Scale="2" Color="Lime"/>
         </Grid>-->
+
+            <Grid x:Name="web" IsVisible="false" Margin="5,30,5,5">
+                <WebView x:Name="webview" WidthRequest="200" HeightRequest="300"/>
+                <Button WidthRequest="30" HeightRequest="30" Text="X" Clicked="Handle_Clicked" HorizontalOptions="Start" BackgroundColor="Teal" VerticalOptions="Start" Opacity="0.7"  TextColor="Black"/>
+            </Grid>
     </Grid>
 </ContentPage>

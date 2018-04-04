@@ -122,8 +122,8 @@ namespace RSSReader.ViewModel
         // click on a cell, display a web page with content details of the RSS news.
         //
         private void OpenWebPage(){
-            WebPage page = new WebPage(selectedItem.guid);
-            Navigation.PushAsync(page);
+        //    WebPage page = new WebPage(selectedItem.guid);
+        //    Navigation.PushAsync(page);
         }
     }
 }

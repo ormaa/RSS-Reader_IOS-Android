@@ -14,7 +14,7 @@ namespace RSSReader.Network
     {
         public static NetworkManager network_manager = new NetworkManager();
         //public static string network_url = "http://feeds.sciencedaily.com/sciencedaily?format=xml";
-        public static string network_url =  "https://megaflux.macg.co/";
+        public static string network_url =  "http://megaflux.macg.co/";
 
         private NetworkManager()
         {

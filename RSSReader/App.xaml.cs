@@ -8,7 +8,10 @@ namespace RSSReader
         {
             InitializeComponent();
 
-            MainPage = new NavigationPage(new RSSReaderPage());
+            //            MainPage = new NavigationPage(new RSSReaderPage());
+            MainPage = new RSSReaderPage();
+
+
         }
 
         protected override void OnStart()
