@@ -6,5 +6,6 @@ namespace RSSReader
 {
     public class myHtmlLabel : Label
     {
+
     }
 }

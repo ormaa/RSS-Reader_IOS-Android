@@ -20,12 +20,6 @@ namespace RSSReader.Parser
 
     }
 
-    //public  class ImageHTML
-    //{
-    //    public  string imageName = "";
-    //    public ImageSource imageSource = null;
-    //}
-
 
 
     public class FeedItemParser
@@ -61,12 +55,13 @@ namespace RSSReader.Parser
                 feed.imageURL = "";        // by default, there is no image
 
                 // title is html. in this case, we need to use something like HTML Label
-                feed.title = item.Element("title").Value.ToString();    // Regex.Unescape(item.Element("title").Value.ToString());
+                feed.title = HtmlToPlainText(item.Element("title").Value.ToString() ); //.Replace(@"\", string.Empty);    // Regex.Unescape(item.Element("title").Value.ToString());
 
                 // Desvcription is html also
                 string str = item.Element("description").Value.ToString();
 
                 // check if description contains an image. if yes, we will display the first one, as thumbnail of the Feed list
+                //
                 if (str.Contains("<img"))
                 {
                     // the description contain at least one image :  we will get the first one as description thumbnail
@@ -74,14 +69,14 @@ namespace RSSReader.Parser
                     // what to do to manage it better ???
 
                     var desc = str;
-                    var index = desc.IndexOf("<img src=");
-                    if ( index != -1 ) {
-                        var index2 = desc.IndexOf(".jpg", index);
-                        if ( index2 != -1 && index2 > index )
+                    var i = desc.IndexOf("<img src=");
+                    if ( i != -1 ) {
+                        var index2 = desc.IndexOf(".jpg", i);
+                        if ( index2 != -1 && index2 > i )
                         {
                             // TODO : this is dangerous, because the length of desc has to be chacked before doing that.
                             // 
-                            var img = desc.Substring(index + 10, index2 - index - 6);
+                            var img = desc.Substring(i + 10, index2 - i - 6);
                             feed.imageURL = img;
                             //feed.ImageUrl = img;
 
@@ -92,43 +87,91 @@ namespace RSSReader.Parser
 
                 // Remove the tags <img ... /> : I don't want to have image in the description, it slow too much the HTML label.
 
-                bool b = true;
-                do {
-                    b = str.Contains("<img");
-                    if (b)
-                    {
-                        var index = str.IndexOf("<img");
-                        if (index != -1)
-                        {
-                            var index2 = str.IndexOf("/>", index);
-                            if ( index2 != -1 )
-                            {
-                                string str2 = str.Substring(0, index) + str.Substring(index2 + 2, str.Length - index2 -2 );
-                                str = str2;
-                            }
-                            else {
-                                var index3 = str.IndexOf("/img>", index);
-                                if (index3 != -1)
-                                {
-                                    string str2 = str.Substring(0, index) + str.Substring(index3 + 5, str.Length - index2 - 5);
-                                    str = str2;
-                                }
-                            }
-                        }
+                //bool b = true;
+                //do {
+                //    b = str.Contains("<img");
+                //    if (b)
+                //    {
+                //        var index = str.IndexOf("<img");
+                //        if (index != -1)
+                //        {
+                //            var index2 = str.IndexOf("/>", index);
+                //            if ( index2 != -1 )
+                //            {
+                //                string str2 = str.Substring(0, index) + str.Substring(index2 + 2, str.Length - index2 -2 );
+                //                str = str2;
+                //            }
+                //            else {
+                //                var index3 = str.IndexOf("/img>", index);
+                //                if (index3 != -1)
+                //                {
+                //                    string str2 = str.Substring(0, index) + str.Substring(index3 + 5, str.Length - index2 - 5);
+                //                    str = str2;
+                //                }
+                //            }
+                //        }
 
-                        // str
-                    }
-                } while ( b );
+                //        // str
+                //    }
+                //} while ( b );
 
-                // Get only 256 characters max for the description. on IOS, if html is too long, trhere is SEVER performance issue in the HTML label !!!!!!
-                // TODO : we will lose the end of the rss item html code. is it really bad ? or is it working ?
-                var max = 256;
-                if ( str.Length < max ) {
-                    max = str.Length;
+                //// replace url of images by "", for the description
+                //bool b = true;
+                //int index = 0;
+                //do
+                //{
+                //    index = str.IndexOf("http", index);
+
+                //    if (index > 0)
+                //    {
+                //            var index2 = str.IndexOf(".jpg", index);
+                //            if (index2 > 0)
+                //            {
+                //                string str2 = str.Substring(0, index) + str.Substring(index2 + 4, str.Length - index2 - 4);
+                //                str = str2;
+                //            }
+                //            else
+                //            {
+                //                var index3 = str.IndexOf(".jpeg", index);
+                //                if (index3 > 0)
+                //                {
+                //                    string str2 = str.Substring(0, index) + str.Substring(index3 + 5, str.Length - index3 - 5);
+                //                    str = str2;
+                //                }
+                //                else {
+                //                    var index4 = str.IndexOf(".png", index);
+                //                    if (index4 > 0)
+                //                    {
+                //                        string str2 = str.Substring(0, index) + str.Substring(index4 + 4 , str.Length - index4 - 4);
+                //                        str = str2;
+                //                    }
+                //                }
+                //            }
+
+                //           index += 4;
+
+                //    }
+
+                //} while (index > 0);
+
+                if (str.Contains("Rendre compatible")) {
+
+                    Debug.WriteLine("ok");
+
+                    var text0 = HtmlToPlainText(str);
                 }
-                feed.description = str.Substring(0, max);
 
-                
+
+                // convert html to plain text
+                var text = HtmlToPlainText(str);
+                // keep a short part of the description string
+                var max = 200;
+                if ( text.Length < max ) {
+                    max = text.Length;
+                }
+                feed.description = text.Substring(0, max) + " ...";
+
+
                 Singleton.feeds.Add(feed);
             }
 
@@ -142,6 +185,38 @@ namespace RSSReader.Parser
             Debug.WriteLine("leaving parse Feed method at  : " + new DateTime().ToString());
 
             return Singleton.feeds;
+        }
+
+
+
+        // co,nvert html to plain text, removing the tags
+        // https://stackoverflow.com/questions/286813/how-do-you-convert-html-to-plain-text
+        //
+        private static string HtmlToPlainText(string html)
+        {
+const string tagWhiteSpace = @"(>|$)(\W|\n|\r)+<";//matches one or more (white space or line breaks) between '>' and '<'
+            const string stripFormatting = @"<[^>]*(>|$)";//match any character between '<' and '>', even when end tag is missing
+            const string lineBreak = @"<(br|BR)\s{0,1}\/{0,1}>";//matches: <br>,<br/>,<br />,<BR>,<BR/>,<BR />
+            var lineBreakRegex = new Regex(lineBreak, RegexOptions.Multiline);
+            var stripFormattingRegex = new Regex(stripFormatting, RegexOptions.Multiline);
+            var tagWhiteSpaceRegex = new Regex(tagWhiteSpace, RegexOptions.Multiline);
+
+            var text = html;
+            //Decode html specific characters
+            text = System.Net.WebUtility.HtmlDecode(text);
+
+            // olivier added : convert \n<p>... into <p>...
+            text = tagWhiteSpaceRegex.Replace(text, "<");
+
+
+            //Remove tag whitespace/line breaks
+            text = tagWhiteSpaceRegex.Replace(text, "><");
+            //Replace <br /> with line breaks
+            text = lineBreakRegex.Replace(text, Environment.NewLine);
+            //Strip formatting
+            text = stripFormattingRegex.Replace(text, string.Empty);
+
+            return text;
         }
 
 

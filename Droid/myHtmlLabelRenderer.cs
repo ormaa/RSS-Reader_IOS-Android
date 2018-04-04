@@ -26,24 +26,17 @@ namespace RSSReader.Droid
             {
 //                    Control.SetBackgroundColor(global::Android.Graphics.Color.LightGreen);
 
-                    Console.Out.WriteLine("android label : " + Element.Text);
+                // will convert HTML text into attributed string. 
+                // does not work with complex HTML code.
 
                 var view = (myHtmlLabel)Element;
                     if (view == null) return;
+                // TODO : HTML.FromHTML()... is deprecated 
                     Control.SetText(Html.FromHtml(view.Text.ToString()), TextView.BufferType.Spannable);
             }
         }
 
-        protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            base.OnElementPropertyChanged(sender, e);
 
-            //if (e.PropertyName == Label.TextProperty.PropertyName)
-           // {
-                //Console.Out.WriteLine("android label : " + Element.Text);
-                //Control?.SetText(Html.FromHtml(Element.Text), TextView.BufferType.Spannable);
-            //}
-        }
 
     }
 }
