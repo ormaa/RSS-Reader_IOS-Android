@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -31,10 +32,18 @@ namespace RSSReader.Network
         {
             if (this.IsConnected())
             {
+                Debug.WriteLine("Starting network load feeds");
+                Debug.WriteLine("at : " + new DateTime().ToString());
+
                 Uri uri = new Uri(network_url);
                 HttpClient client = new HttpClient();
                 HttpResponseMessage response = await client.GetAsync(uri);
                 String response_string = await response.Content.ReadAsStringAsync();
+
+                Debug.WriteLine("Feeds received at : " + new DateTime().ToString());
+
+                Debug.WriteLine("Start to parse");
+
                 FeedItemParser parser = new FeedItemParser();
                // List<FeedItem> list = await Task.Run(() => parser.ParseFeed(response_string));
                 List<FeedItem> list = await Task.Run(() => parser.ParseFeed(response_string));

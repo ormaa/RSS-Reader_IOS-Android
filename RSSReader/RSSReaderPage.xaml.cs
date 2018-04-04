@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using RSSReader.Model;
 using RSSReader.ViewModel;
@@ -14,6 +15,7 @@ namespace RSSReader
         {
             InitializeComponent();
 
+            Debug.WriteLine("Starting viewModel");
             RSSFeedViewModelObject = new RSSFeedViewModel(Navigation);
             Title = "RSS Feeds";
             BindingContext = RSSFeedViewModelObject;

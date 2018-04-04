@@ -1,27 +1,35 @@
 ﻿using System;
 using System.Drawing;
+using RSSReader.iOS;
 using UIKit;
+using Xamarin.Forms;
+
+[assembly: Dependency(typeof(MediaService))]
 
 namespace RSSReader.iOS
 {
 
-
     public class MediaService : IMediaService
     {
 
-        public UIKit.UIImage ImageFromByteArray(byte[] data)
+        public UIKit.UIImage ImageFromByteArray(byte[] datas)
         {
-            if (data == null)
+            if (datas == null)
                 return null;
 
-            return new UIKit.UIImage(Foundation.NSData.FromArray(data));
+            return new UIKit.UIImage(Foundation.NSData.FromArray(datas));
         }
 
 
         public byte[] ResizeImage(byte[] imageData, float width, float height)
         {
+            Console.Out.WriteLine("image data : " + imageData.Length.ToString());
 
             UIImage originalImage = ImageFromByteArray(imageData);
+
+            if ( originalImage == null) {
+                return null;
+            }
 
             var originalHeight = originalImage.Size.Height;
             var originalWidth = originalImage.Size.Width;

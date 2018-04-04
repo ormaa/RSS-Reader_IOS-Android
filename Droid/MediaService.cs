@@ -1,6 +1,10 @@
 ﻿using System;
 using System.IO;
 using Android.Graphics;
+using RSSReader.Droid;
+using Xamarin.Forms;
+
+[assembly: Dependency(typeof(MediaService))]
 
 namespace RSSReader.Droid
 {

@@ -17,17 +17,14 @@ namespace RSSReader.Model
 
 
         ImageSource  _imageSource;
-
         public  ImageSource imageSource { 
             get {
-
-
                // Task.Run(async () => { await getImg(image); });
-                if ( image != null && image != ""  && _imageSource == null) {
-                    Debug.WriteLine(image);
+                //if ( image != null && image != ""  && _imageSource == null) {
+                    //Debug.WriteLine(image);
                     //Task<ImageSource> result = Task<ImageSource>.Factory.StartNew( () => ImageSource.FromUri(new Uri(image)));
                     //_imageSource = result.Result;
-                }
+                //}
 
                 //ImageSource src = ImageSource.FromUri( new Uri( image ) );
                 //Image img = new Image { Source = image };
@@ -41,9 +38,9 @@ namespace RSSReader.Model
 
                 return _imageSource;
             }
-            //set {
-                
-            //}  
+            set {
+                _imageSource = value;
+            }  
         }
 
         //async void getImg(string name) 

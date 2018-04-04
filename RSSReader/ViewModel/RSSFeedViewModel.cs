@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using RSSReader.Model;
@@ -22,9 +23,13 @@ namespace RSSReader.ViewModel
             {
                 return new Command(async () =>
                 {
+                    Debug.WriteLine("Refresh command ");
+
                     MessagingCenter.Send(Application.Current, "startActivity");
 
                     IsRefreshing = true;
+
+                    Debug.WriteLine("Read feeds items");
 
                     //await RefreshData();
                     NetworkManager manager = NetworkManager.Instance;
@@ -32,6 +37,8 @@ namespace RSSReader.ViewModel
                     FeedList = new ObservableCollection<FeedItem>(list);
 
                     IsRefreshing = false;
+
+                    Debug.WriteLine("Refresh completed. Stopping activity indicator");
 
                     // rss feed is loaded, can hide the wait animation
                     MessagingCenter.Send(Application.Current, "stopActivity");
@@ -96,6 +103,8 @@ namespace RSSReader.ViewModel
         // get rss content, async, by webservice call
         public async void GetNewsFeedAsync()
         {
+            Debug.WriteLine("get Feeds items from web");
+
             //NetworkManager manager = NetworkManager.Instance;
             //List<FeedItem> list = await manager.GetSyncFeedAsync();
             //FeedList = new ObservableCollection<FeedItem>(list);

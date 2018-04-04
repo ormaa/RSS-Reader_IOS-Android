@@ -19,8 +19,8 @@ namespace RSSReader.Parser
 
     public  class ImageHTML
     {
-         string imageName = "";
-        ImageSource imageSource = null;
+        public  string imageName = "";
+        public ImageSource imageSource = null;
     }
 
 
@@ -76,46 +76,66 @@ namespace RSSReader.Parser
                 }
 
 
-                //// Remove the tags <img ... />
-                //bool b = true;
-                //do {
-                //    b = str.Contains("<img");
-                //    if (b)
-                //    {
-                //        var index = str.IndexOf("<img");
-                //        if (index != -1)
-                //        {
-                //            var index2 = str.IndexOf("/>", index);
-                //            if ( index2 != -1 )
-                //            {
-                //                string str2 = str.Substring(0, index) + str.Substring(index2 + 2, str.Length - index2 -2 );
-                //                str = str2;
-                //            }
-                //            else {
-                //                var index3 = str.IndexOf("/img>", index);
-                //                if (index3 != -1)
-                //                {
-                //                    string str2 = str.Substring(0, index) + str.Substring(index3 + 5, str.Length - index2 - 5);
-                //                    str = str2;
-                //                }
-                //            }
-                //        }
+                // Remove the tags <img ... /> : I don't want to have image in the description, it slow too much the HTML label.
 
-                //        // str
-                //    }
-                //} while ( b );
+                bool b = true;
+                do {
+                    b = str.Contains("<img");
+                    if (b)
+                    {
+                        var index = str.IndexOf("<img");
+                        if (index != -1)
+                        {
+                            var index2 = str.IndexOf("/>", index);
+                            if ( index2 != -1 )
+                            {
+                                string str2 = str.Substring(0, index) + str.Substring(index2 + 2, str.Length - index2 -2 );
+                                str = str2;
+                            }
+                            else {
+                                var index3 = str.IndexOf("/img>", index);
+                                if (index3 != -1)
+                                {
+                                    string str2 = str.Substring(0, index) + str.Substring(index3 + 5, str.Length - index2 - 5);
+                                    str = str2;
+                                }
+                            }
+                        }
 
-                feed.description = str;
+                        // str
+                    }
+                } while ( b );
+
+                // Get only 256 characters max for the description. on IOS, if html is too long, trhere is SEVER performance issue in the HTML label !!!!!!
+                // TODO : we will lose the end of the rss item html code. is it really bad ? or is it working ?
+                var max = 256;
+                if ( str.Length < max ) {
+                    max = str.Length;
+                }
+                feed.description = str.Substring(0, max);
 
                 
                 feeds.Add(feed);
             }
 
+            Debug.WriteLine("Feed parsed properly");
+            Debug.WriteLine("Nb lines of feeds : " + feeds.Count.ToString());
+
+            Debug.WriteLine("Starting to load images in async task at : " + new DateTime().ToString());
+
+            Task.Run(async () => { await LoadImages(feeds); });
+
+            Debug.WriteLine("leaving parse Feed method at  : " + new DateTime().ToString());
+
             return feeds;
         }
 
 
-        public async void LoadImages(List<FeedItem> feeds) 
+                    //Task<ImageSource> result = Task<ImageSource>.Factory.StartNew(() => ImageSource.FromUri(new Uri(name)));
+                    //_imageSource = result.Result;
+
+
+        public async Task LoadImages(List<FeedItem> feeds) 
         {
             Debug.WriteLine("Loading images");
             foreach (var feed in feeds)
@@ -125,37 +145,86 @@ namespace RSSReader.Parser
                 if (name != null && name != "" )
                 {
                     Debug.WriteLine(name);
-                    Task<ImageSource> result = Task<ImageSource>.Factory.StartNew(() => ImageSource.FromUri(new Uri(name)));
-                    //_imageSource = result.Result;
+
+                    // load the imagen into a memorystream
+                    MemoryStream strm = await GetImageAsync(name);
+
+                    var array = strm.ToArray();
+                    Debug.WriteLine("Stream size : " + strm.Length.ToString());
+
+                    // reduce image size
+                    var bytes = DependencyService.Get<IMediaService>().ResizeImage(array, 128, 128);
+
+                    if ( bytes != null && bytes.Length > 0 ) {
+                        
+                        Debug.WriteLine("image reduced bytes size : " + bytes.Length.ToString());
+
+                        // convert byte[] into an imagesource
+                        var stream1 = new MemoryStream(bytes);
+                        ImageSource source = ImageSource.FromStream(() => stream1);
+
+                        // create imageHTML object
+                        ImageHTML imgHtml = new ImageHTML();
+                        imgHtml.imageName = name;
+                        imgHtml.imageSource = source;
+                        Singleton.Images.Add(imgHtml);
+
+                        // TODO : update feed list element. is it woring ??? to be checked !
+                        // Binding will send the update event to the UI ??? not here. view model is not proper then.
+                        feed.imageSource = source;
+                    }
+                    else {
+                        Debug.WriteLine("resized image returned null : " + name);
+
+                    }
+
+                }
+                else {
+                    Debug.WriteLine("Feed has an image name = null");
                 }
             }
 
             Debug.WriteLine("Loading images Completed");
         }
       
-        //public async Task<Image> GetImageAsync(string url)
-        //{
-        //    var tcs = new TaskCompletionSource<Image>();
-        //    Image webImage = null;
-        //    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-        //    request.Method = "GET";
-        //    await Task.Factory.FromAsync<WebResponse>(request.BeginGetResponse, request.EndGetResponse, null)
-        //        .ContinueWith(task =>
-        //        {
-        //            var webResponse = (HttpWebResponse)task.Result;
-        //            Stream responseStream = webResponse.GetResponseStream();
-        //            if (webResponse.ContentEncoding.ToLower().Contains("gzip"))
-        //                responseStream = new GZipStream(responseStream, CompressionMode.Decompress);
-        //            else if (webResponse.ContentEncoding.ToLower().Contains("deflate"))
-        //                responseStream = new DeflateStream(responseStream, CompressionMode.Decompress);
 
-        //            if (responseStream != null) webImage = Image.FromStream(responseStream);
-        //            tcs.TrySetResult(webImage);
-        //            webResponse.Close();
-        //            responseStream.Close();
-        //        });
-        //    return tcs.Task.Result;
-        //}
+        // load one image, in async mode
+        // return a byte[]
+        //
+        public async Task<MemoryStream> GetImageAsync(string url)
+        {
+            var tcs = new TaskCompletionSource<MemoryStream>();
+
+            // Get image from web url
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            request.Method = "GET";
+            await Task.Factory.FromAsync<WebResponse>(request.BeginGetResponse, request.EndGetResponse, null)
+                .ContinueWith(task =>
+                {
+                    // image is received
+                    Debug.WriteLine("Image received : " + url);
+
+                    var webResponse = (HttpWebResponse)task.Result;
+                    Stream responseStream = webResponse.GetResponseStream();
+                //    ImageSource img = null;
+                //    if (responseStream != null)  img = ImageSource.FromStream( () => responseStream );
+                //    else {
+                //       Debug.WriteLine("Image null ");
+                //   }
+
+                    MemoryStream memoryStream = new MemoryStream();
+                    responseStream.CopyTo(memoryStream);
+
+                    tcs.TrySetResult(memoryStream ); 
+
+                    webResponse.Dispose();
+                    responseStream.Dispose(); 
+                });
+
+            return tcs.Task.Result;
+        }
+
+
 
 
 
