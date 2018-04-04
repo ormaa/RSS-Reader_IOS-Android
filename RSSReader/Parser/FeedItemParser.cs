@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
+using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -10,6 +12,19 @@ using Xamarin.Forms;
 
 namespace RSSReader.Parser
 {
+
+    public static class Singleton {
+        public static List<ImageHTML> Images = new List<ImageHTML>();
+    }
+
+    public  class ImageHTML
+    {
+         string imageName = "";
+        ImageSource imageSource = null;
+    }
+
+
+
     public class FeedItemParser
     {
 
@@ -100,8 +115,48 @@ namespace RSSReader.Parser
         }
 
 
+        public async void LoadImages(List<FeedItem> feeds) 
+        {
+            Debug.WriteLine("Loading images");
+            foreach (var feed in feeds)
+            {
+                string name = feed.image;
 
+                if (name != null && name != "" )
+                {
+                    Debug.WriteLine(name);
+                    Task<ImageSource> result = Task<ImageSource>.Factory.StartNew(() => ImageSource.FromUri(new Uri(name)));
+                    //_imageSource = result.Result;
+                }
+            }
+
+            Debug.WriteLine("Loading images Completed");
+        }
       
+        //public async Task<Image> GetImageAsync(string url)
+        //{
+        //    var tcs = new TaskCompletionSource<Image>();
+        //    Image webImage = null;
+        //    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+        //    request.Method = "GET";
+        //    await Task.Factory.FromAsync<WebResponse>(request.BeginGetResponse, request.EndGetResponse, null)
+        //        .ContinueWith(task =>
+        //        {
+        //            var webResponse = (HttpWebResponse)task.Result;
+        //            Stream responseStream = webResponse.GetResponseStream();
+        //            if (webResponse.ContentEncoding.ToLower().Contains("gzip"))
+        //                responseStream = new GZipStream(responseStream, CompressionMode.Decompress);
+        //            else if (webResponse.ContentEncoding.ToLower().Contains("deflate"))
+        //                responseStream = new DeflateStream(responseStream, CompressionMode.Decompress);
+
+        //            if (responseStream != null) webImage = Image.FromStream(responseStream);
+        //            tcs.TrySetResult(webImage);
+        //            webResponse.Close();
+        //            responseStream.Close();
+        //        });
+        //    return tcs.Task.Result;
+        //}
+
 
 
         //public static string UnescapeCodes(string src)

@@ -25,7 +25,7 @@ namespace RSSReader.Model
                // Task.Run(async () => { await getImg(image); });
                 if ( image != null && image != ""  && _imageSource == null) {
                     Debug.WriteLine(image);
-                    Task<ImageSource> result = Task<ImageSource>.Factory.StartNew( () => ImageSource.FromUri(new Uri(image)));
+                    //Task<ImageSource> result = Task<ImageSource>.Factory.StartNew( () => ImageSource.FromUri(new Uri(image)));
                     //_imageSource = result.Result;
                 }
 
